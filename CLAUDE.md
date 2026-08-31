@@ -176,8 +176,32 @@ responsable del tratamiento. Plena vigencia: **1 de diciembre de 2026**.
 - `opt_out = true` excluye de la UI, los exports, la API pública y el
   re-enriquecimiento.
 - Retención del `audit_log`: 24 meses.
-- **Región de datos de Supabase: pendiente de definir con el cliente.** No crear
-  el proyecto con la región por defecto.
+
+### Región de datos — DECIDIDO: Frankfurt `eu-central-1`
+
+Confirmado con el cliente. Al crear el proyecto Supabase:
+
+- Elegir la región **específica** `eu-central-1`, **NUNCA** la agrupación
+  genérica "Europe". La documentación de Supabase advierte que las regiones
+  generales despliegan en *cualquier* región AWS del área, y que "Europe"
+  incluye Londres y Zúrich — que no son estados miembro de la UE. Elegir la
+  genérica rompe el argumento GDPR.
+- Supabase es explícito: *"Region selection is a data-location control, not
+  proof of regulatory compliance."* La región es condición necesaria, no
+  suficiente: hay que firmar además cláusulas contractuales de transferencia
+  internacional con UDD y dejar la región escrita en el contrato de encargo
+  (Art. 15 bis).
+- **Vercel se co-ubica en `fra1`.** Es lo que hace viable Frankfurt: con la
+  función y la base en la misma región, cada query es ~1 ms local y la
+  distancia (~220 ms desde Chile) se paga una sola vez por navegación, no una
+  vez por consulta. Desplegar Vercel en otra región convierte cada pantalla en
+  varios viajes transatlánticos y revienta el objetivo de <1,5 s.
+
+Razón de la elección: el costo de Supabase es idéntico en toda región (compute,
+disco, IOPS y egress tienen tarifa única global, verificado en el fuente de su
+documentación), así que la decisión se tomó por el argumento de cumplimiento.
+GDPR cierra la objeción del abogado de privacidad sin discusión, y sirve igual
+para los siguientes clientes.
 
 ## Estado actual
 
@@ -192,5 +216,7 @@ Fases siguientes: 1 datos y RLS · 2 ingesta · 3 dashboard/egresados/perfil ·
 Todas planteadas en el CHECKPOINT 1, ninguna respondida aún:
 headers exactos de los tres CSV de Clay · llave de vínculo del historial
 laboral · si la base UDD trae año de egreso / facultad / sede · si los datos de
-contacto ya están enriquecidos · **región de Supabase** · usuarios y roles del
-piloto · dominio definitivo del portal · qué hacer con los 1.694 sin match.
+contacto ya están enriquecidos · usuarios y roles del piloto · dominio
+definitivo del portal · qué hacer con los 1.694 sin match.
+
+**Respondida:** región de Supabase → Frankfurt `eu-central-1` (ver arriba).
