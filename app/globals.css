@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Variables CSS de Argos.
+ * Los cinco colores base van en canales RGB para que los modificadores de
+ * opacidad de Tailwind (`/68`, `/12`…) funcionen sobre ellos.
+ */
+:root {
+  --argos-purple-900: 38 33 92; /* #26215C */
+  --argos-purple-600: 83 74 183; /* #534AB7 */
+  --argos-purple-300: 175 169 236; /* #AFA9EC */
+  --argos-navy-900: 13 27 42; /* #0D1B2A */
+  --argos-cream-50: 248 247 242; /* #F8F7F2 */
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: rgb(var(--argos-cream-50));
+    color: rgb(var(--argos-navy-900));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Todo número de la UI es tabular. Se aplica por token, no caso a caso. */
+  ::selection {
+    background: rgb(var(--argos-purple-300));
+    color: rgb(var(--argos-purple-900));
+  }
+
+  /* Foco visible en toda la app — requisito de accesibilidad (§15). */
+  :focus-visible {
+    outline: 2px solid rgb(var(--argos-purple-600));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  input,
+  button,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+}
+
+@layer utilities {
+  /* Números tabulares: KPIs, porcentajes, conteos, años, fechas, IDs, scores. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Dato numérico en tabla o lista: tabular + peso 500. */
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  /* Cifra KPI grande: tabular + peso 700 + tracking -.03em. */
+  .num-kpi {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .truncate-cell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* §6: prefers-reduced-motion desactiva argosFade y argosDot. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

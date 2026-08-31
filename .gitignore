@@ -1,0 +1,26 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+
+# Entorno — nunca se commitean secretos
+.env
+.env.local
+.env.*.local
+
+# Datos de clientes: los CSV exportados de Clay contienen datos personales
+# y NO entran al repo bajo ninguna circunstancia (§12).
+/data/
+*.csv
+*.xlsx
+
+# Salidas de exportación
+/exports/
+
+# Herramientas
+*.tsbuildinfo
+next-env.d.ts
+coverage/
+/test-results/
+/playwright-report/

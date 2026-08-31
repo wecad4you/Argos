@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Argos — Data Enrichment & Monitoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F8F7F2; color: #0D1B2A; font-family: "Instrument Sans", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #534AB7; text-decoration: none; }
+  a:hover { color: #26215C; }
+  ::selection { background: #AFA9EC; color: #26215C; }
+  @keyframes argosRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes argosPulse { 0%, 100% { opacity: .35; transform: scale(1); } 50% { opacity: .7; transform: scale(1.06); } }
+  @keyframes argosBlink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+  @keyframes argosScan { 0% { transform: translateY(-100%); } 100% { transform: translateY(1200%); } }
+  @keyframes argosDot { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+</style>
+</helmet>
+
+<div style="max-width: 100%; overflow-x: hidden">
+
+  <header style="position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(248,247,242,.82); border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="max-width: 1180px; margin: 0 auto; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 32px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style="display: block; animation: argosBlink 7s ease-in-out infinite; transform-origin: center">
+          <path d="M1.5 16C6 8.5 10.8 5 16 5s10 3.5 14.5 11C26 23.5 21.2 27 16 27S6 23.5 1.5 16Z" stroke="#26215C" stroke-width="2" fill="none"></path>
+          <circle cx="16" cy="16" r="6" fill="#534AB7"></circle>
+          <circle cx="16" cy="16" r="2.4" fill="#0D1B2A"></circle>
+          <circle cx="18.2" cy="13.4" r="1.1" fill="#F8F7F2"></circle>
+        </svg>
+        <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 23px; letter-spacing: -.01em; color: #26215C">Argos</span>
+      </div>
+      <nav style="display: flex; align-items: center; gap: 30px; font-size: 14.5px; color: rgba(13,27,42,.62)">
+        <a href="#producto" style="color: inherit">Producto</a>
+        <a href="#dashboard" style="color: inherit">Reportería</a>
+        <a href="#como" style="color: inherit">Cómo funciona</a>
+        <a href="#api" style="color: inherit">API</a>
+        <a href="#privacidad" style="color: inherit">Privacidad</a>
+        <a href="#demo" style="display: inline-flex; align-items: center; padding: 9px 18px; border-radius: 999px; background: #26215C; color: #F8F7F2; font-weight: 500">Agenda un demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <section style="position: relative; padding: 108px 32px 96px; border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="position: absolute; top: -180px; left: 50%; width: 900px; height: 520px; transform: translateX(-50%); background: radial-gradient(ellipse at center, rgba(175,169,236,.42), rgba(248,247,242,0) 68%); pointer-events: none"></div>
+    <div style="position: relative; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr .95fr; gap: 72px; align-items: center">
+      <div style="animation: argosRise .7s ease-out both">
+        <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border: 1px solid rgba(38,33,92,.18); border-radius: 999px; font-size: 13px; color: #26215C; margin-bottom: 30px">
+          <span style="padding: 2px 8px; border-radius: 999px; background: #26215C; color: #F8F7F2; font-size: 11px; letter-spacing: .08em; text-transform: uppercase">Nuevo</span>
+          Argos Alumni — enriquecimiento para universidades
+        </div>
+        <h1 style="font-family: Georgia, 'Times New Roman', serif; font-size: 72px; line-height: 1.02; letter-spacing: -.025em; margin: 0 0 24px; color: #0D1B2A; text-wrap: pretty">
+          Tus datos no están muertos.<br /><em style="color: #534AB7">Están dormidos.</em>
+        </h1>
+        <p style="font-size: 20px; line-height: 1.55; color: rgba(13,27,42,.66); margin: 0 0 38px; max-width: 520px; text-wrap: pretty">
+          Argos despierta bases de datos obsoletas. Dónde trabaja cada persona, en qué cargo, desde cuándo. Actualizado. Siempre.
+        </p>
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+          <a href="#demo" style="display: inline-flex; align-items: center; padding: 15px 30px; border-radius: 999px; background: #26215C; color: #F8F7F2; font-size: 16px; font-weight: 500" style-hover="background: #534AB7">{{ ctaLabel }}</a>
+          <a href="#producto" style="display: inline-flex; align-items: center; padding: 15px 26px; border-radius: 999px; border: 1px solid rgba(13,27,42,.16); color: #0D1B2A; font-size: 16px" style-hover="border-color: #534AB7; color: #534AB7">Ver el producto</a>
+        </div>
+        <div style="display: flex; gap: 44px; margin-top: 56px; padding-top: 30px; border-top: 1px solid rgba(13,27,42,.1)">
+          <div>
+            <div style="font-family: Georgia, serif; font-size: 34px; color: #26215C; letter-spacing: -.02em">{{ matchRate }}%</div>
+            <div style="font-size: 13.5px; color: rgba(13,27,42,.55); margin-top: 2px">tasa de match promedio</div>
+          </div>
+          <div>
+            <div style="font-family: Georgia, serif; font-size: 34px; color: #26215C; letter-spacing: -.02em">24/7</div>
+            <div style="font-size: 13.5px; color: rgba(13,27,42,.55); margin-top: 2px">monitoreo de cambios</div>
+          </div>
+          <div>
+            <div style="font-family: Georgia, serif; font-size: 34px; color: #26215C; letter-spacing: -.02em">100%</div>
+            <div style="font-size: 13.5px; color: rgba(13,27,42,.55); margin-top: 2px">fuentes públicas</div>
+          </div>
+        </div>
+      </div>
+
+      <sc-if value="{{ showLiveTicker }}" hint-placeholder-val="{{ true }}">
+        <div style="position: relative; border-radius: 18px; background: #0D1B2A; padding: 26px; box-shadow: 0 40px 80px -40px rgba(38,33,92,.55); overflow: hidden; animation: argosRise .7s .12s ease-out both">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(83,74,183,.22), transparent 45%); pointer-events: none"></div>
+          <div style="position: relative; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(175,169,236,.75)">Argos live feed</span>
+            <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(248,247,242,.6)">
+              <span style="width: 7px; height: 7px; border-radius: 50%; background: #AFA9EC; animation: argosDot 1.6s ease-in-out infinite"></span>
+              en vivo
+            </span>
+          </div>
+          <div style="position: relative; display: flex; flex-direction: column; gap: 10px">
+            <sc-for list="{{ events }}" as="ev" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(248,247,242,.05); border: 1px solid rgba(175,169,236,.14)">
+                <div style="flex: none; width: 34px; height: 34px; border-radius: 50%; background: rgba(175,169,236,.16); color: #AFA9EC; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 600">{{ ev.initials }}</div>
+                <div style="min-width: 0; flex: 1">
+                  <div style="font-size: 14px; color: #F8F7F2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ ev.name }}</div>
+                  <div style="font-size: 12.5px; color: rgba(248,247,242,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ ev.change }}</div>
+                </div>
+                <div style="flex: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(175,169,236,.7)">{{ ev.ago }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="position: relative; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(248,247,242,.08); font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: rgba(248,247,242,.42)">
+            POST /v1/webhooks/job-change → tu CRM
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <section style="background: #0D1B2A; color: #F8F7F2; padding: 110px 32px">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(175,169,236,.8); margin-bottom: 26px">01 — El problema</div>
+      <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 20px; max-width: 800px; text-wrap: pretty">
+        La base de datos de tu organización lleva años sin decir la verdad.
+      </h2>
+      <p style="font-size: 19px; line-height: 1.55; color: rgba(248,247,242,.6); max-width: 640px; margin: 0 0 66px">
+        Correos que rebotan. Cargos de hace una década. Empresas que ya no existen. Cada campaña habla con fantasmas.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(248,247,242,.12); border: 1px solid rgba(248,247,242,.12); border-radius: 16px; overflow: hidden">
+        <div style="background: #0D1B2A; padding: 38px 32px">
+          <div style="font-family: Georgia, serif; font-size: 60px; color: #AFA9EC; letter-spacing: -.03em; line-height: 1">30%</div>
+          <div style="font-size: 15.5px; color: rgba(248,247,242,.62); margin-top: 12px; line-height: 1.5">de un registro profesional queda obsoleto cada año.</div>
+        </div>
+        <div style="background: #0D1B2A; padding: 38px 32px">
+          <div style="font-family: Georgia, serif; font-size: 60px; color: #AFA9EC; letter-spacing: -.03em; line-height: 1">1 de 5</div>
+          <div style="font-size: 15.5px; color: rgba(248,247,242,.62); margin-top: 12px; line-height: 1.5">personas cambia de trabajo antes de que tú te enteres.</div>
+        </div>
+        <div style="background: #0D1B2A; padding: 38px 32px">
+          <div style="font-family: Georgia, serif; font-size: 60px; color: #AFA9EC; letter-spacing: -.03em; line-height: 1">0</div>
+          <div style="font-size: 15.5px; color: rgba(248,247,242,.62); margin-top: 12px; line-height: 1.5">valor tiene un CRM que nadie confía en usar.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 110px 32px; border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start">
+        <div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #534AB7; margin-bottom: 26px">02 — La solución</div>
+          <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 22px; color: #0D1B2A; text-wrap: pretty">Mil ojos sobre tu base de datos.</h2>
+          <p style="font-size: 19px; line-height: 1.55; color: rgba(13,27,42,.62); margin: 0; max-width: 480px">
+            Argos cruza tus registros con datos profesionales públicos, completa lo que falta y vigila cada cambio. Una vez conectado, nunca vuelve a envejecer.
+          </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          <div style="padding: 26px 28px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)" style-hover="border-color: #AFA9EC">
+            <div style="font-size: 18px; font-weight: 600; color: #26215C; margin-bottom: 8px">Enriquecimiento</div>
+            <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">Empresa, cargo, seniority, industria, ubicación e historial laboral completo para cada persona.</div>
+          </div>
+          <div style="padding: 26px 28px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)" style-hover="border-color: #AFA9EC">
+            <div style="font-size: 18px; font-weight: 600; color: #26215C; margin-bottom: 8px">Monitoreo continuo</div>
+            <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">Detectamos cambios de trabajo, ascensos y movimientos de industria. Te avisamos el mismo día.</div>
+          </div>
+          <div style="padding: 26px 28px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)" style-hover="border-color: #AFA9EC">
+            <div style="font-size: 18px; font-weight: 600; color: #26215C; margin-bottom: 8px">Verificación</div>
+            <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">Cada match trae score de confianza y fuente. Tú decides el umbral que aceptas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="producto" style="padding: 110px 32px; background: linear-gradient(180deg, rgba(175,169,236,.14), rgba(248,247,242,0) 60%); border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #534AB7">03 — Producto</div>
+        <div style="height: 1px; flex: 1; background: rgba(13,27,42,.12)"></div>
+      </div>
+      <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.05; letter-spacing: -.02em; margin: 0 0 18px; color: #0D1B2A">Argos <em style="color: #534AB7">Alumni</em></h2>
+      <p style="font-size: 19px; line-height: 1.55; color: rgba(13,27,42,.62); margin: 0 0 56px; max-width: 620px">
+        Tu base de egresados, viva. Descubre dónde llegaron los que pasaron por tu universidad — y úsalo para fundraising, empleabilidad y rankings.
+      </p>
+      <div style="display: grid; grid-template-columns: .85fr 1.15fr; gap: 40px; align-items: stretch">
+        <div style="border-radius: 18px; background: #26215C; color: #F8F7F2; padding: 40px 36px; display: flex; flex-direction: column; justify-content: space-between">
+          <div>
+            <div style="font-family: Georgia, serif; font-size: 86px; line-height: 1; letter-spacing: -.03em">{{ matchRate }}%</div>
+            <div style="font-size: 16px; color: rgba(248,247,242,.68); margin-top: 12px; line-height: 1.5">de los registros encuentran match verificado en fuentes profesionales públicas.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 44px; padding-top: 26px; border-top: 1px solid rgba(248,247,242,.16); font-size: 15px; color: rgba(248,247,242,.8)">
+            <div>Fundraising con contexto real</div>
+            <div>Empleabilidad medible por cohorte</div>
+            <div>Rankings con datos defendibles</div>
+          </div>
+        </div>
+        <div style="border-radius: 18px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.09); overflow: hidden">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(13,27,42,.45); border-bottom: 1px solid rgba(13,27,42,.08)">
+            <div style="padding: 16px 26px">Tu registro</div>
+            <div style="padding: 16px 26px; background: rgba(175,169,236,.16); color: #26215C">Enriquecido por Argos</div>
+          </div>
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid rgba(13,27,42,.06)">
+              <div style="padding: 15px 26px">
+                <div style="font-size: 11.5px; color: rgba(13,27,42,.42); margin-bottom: 3px">{{ row.label }}</div>
+                <div style="font-size: 15px; color: rgba(13,27,42,.45)">{{ row.before }}</div>
+              </div>
+              <div style="padding: 15px 26px; background: rgba(175,169,236,.08)">
+                <div style="font-size: 11.5px; color: rgba(38,33,92,.5); margin-bottom: 3px">{{ row.label }}</div>
+                <div style="font-size: 15px; color: #26215C; font-weight: 500">{{ row.after }}</div>
+              </div>
+            </div>
+          </sc-for>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 26px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: rgba(13,27,42,.45)">
+            <span>match_score: 0.94</span>
+            <span>source: public_profile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard" style="padding: 110px 32px; background: #0D1B2A; color: #F8F7F2">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 52px">
+        <div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(175,169,236,.8); margin-bottom: 26px">04 — Reportería</div>
+          <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.06; letter-spacing: -.02em; margin: 0 0 18px; max-width: 720px; text-wrap: pretty">Deja de adivinar dónde terminaron.</h2>
+          <p style="font-size: 19px; line-height: 1.55; color: rgba(248,247,242,.6); margin: 0; max-width: 560px">
+            Cada registro enriquecido alimenta un panel que responde las preguntas que tu rector, tu directorio y tu equipo de fundraising hacen todos los años.
+          </p>
+        </div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(248,247,242,.4); text-align: right; line-height: 1.8">
+          Datos de ejemplo<br />Universidad demo · 42.317 egresados
+        </div>
+      </div>
+
+      <div style="border-radius: 20px; background: #F8F7F2; color: #0D1B2A; box-shadow: 0 60px 120px -50px rgba(0,0,0,.7); overflow: hidden">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 24px; background: #FFFFFF; border-bottom: 1px solid rgba(13,27,42,.09)">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="none" style="display: block">
+              <path d="M1.5 16C6 8.5 10.8 5 16 5s10 3.5 14.5 11C26 23.5 21.2 27 16 27S6 23.5 1.5 16Z" stroke="#26215C" stroke-width="2" fill="none"></path>
+              <circle cx="16" cy="16" r="6" fill="#534AB7"></circle>
+              <circle cx="16" cy="16" r="2.4" fill="#0D1B2A"></circle>
+            </svg>
+            <span style="font-family: Georgia, serif; font-size: 17px; color: #26215C">Argos Alumni</span>
+            <span style="width: 1px; height: 18px; background: rgba(13,27,42,.14)"></span>
+            <span style="font-size: 14px; color: rgba(13,27,42,.55)">Panel institucional</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px">
+            <span style="padding: 6px 12px; border-radius: 8px; background: rgba(38,33,92,.07); color: #26215C">Cohortes 2010–2024</span>
+            <span style="padding: 6px 12px; border-radius: 8px; background: rgba(38,33,92,.07); color: #26215C">Todas las facultades</span>
+            <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; background: rgba(83,74,183,.12); color: #534AB7">
+              <span style="width: 6px; height: 6px; border-radius: 50%; background: #534AB7; animation: argosDot 1.6s ease-in-out infinite"></span>
+              Actualizado hoy
+            </span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(13,27,42,.08); border-bottom: 1px solid rgba(13,27,42,.08)">
+          <div style="background: #F8F7F2; padding: 26px 24px">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 10px">Empleados en Fortune 500</div>
+            <div style="font-family: Georgia, serif; font-size: 42px; line-height: 1; color: #26215C; letter-spacing: -.02em">12,4%</div>
+            <div style="font-size: 12.5px; color: #534AB7; margin-top: 8px">+1,8 pts vs. 2023</div>
+          </div>
+          <div style="background: #F8F7F2; padding: 26px 24px">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 10px">Empleados al primer año</div>
+            <div style="font-family: Georgia, serif; font-size: 42px; line-height: 1; color: #26215C; letter-spacing: -.02em">88%</div>
+            <div style="font-size: 12.5px; color: #534AB7; margin-top: 8px">cohorte 2024</div>
+          </div>
+          <div style="background: #F8F7F2; padding: 26px 24px">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 10px">Permanencia promedio</div>
+            <div style="font-family: Georgia, serif; font-size: 42px; line-height: 1; color: #26215C; letter-spacing: -.02em">27 <span style="font-size: 20px; color: rgba(13,27,42,.45)">meses</span></div>
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-top: 8px">por posición</div>
+          </div>
+          <div style="background: #F8F7F2; padding: 26px 24px">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 10px">Registros enriquecidos</div>
+            <div style="font-family: Georgia, serif; font-size: 42px; line-height: 1; color: #26215C; letter-spacing: -.02em">33.428</div>
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-top: 8px">de 42.317 · {{ matchRate }}%</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.05fr 1fr; gap: 1px; background: rgba(13,27,42,.08)">
+          <div style="background: #F8F7F2; padding: 30px 28px 34px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px">
+              <div style="font-size: 15.5px; font-weight: 600; color: #0D1B2A">Distribución por seniority</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(13,27,42,.4)">% de la base</div>
+            </div>
+            <div style="display: flex; height: 12px; border-radius: 999px; overflow: hidden; margin-bottom: 26px">
+              <sc-for list="{{ seniority }}" as="s" hint-placeholder-count="5">
+                <div style="height: 100%; background: {{ s.tone }}; width: {{ s.w }}"></div>
+              </sc-for>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <sc-for list="{{ seniority }}" as="s" hint-placeholder-count="5">
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <span style="flex: none; width: 9px; height: 9px; border-radius: 3px; background: {{ s.tone }}"></span>
+                  <span style="flex: 1; font-size: 14.5px; color: rgba(13,27,42,.72)">{{ s.label }}</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 13.5px; color: #26215C">{{ s.pct }}%</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #F8F7F2; padding: 30px 28px 34px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px">
+              <div style="font-size: 15.5px; font-weight: 600; color: #0D1B2A">Áreas funcionales</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(13,27,42,.4)">top 8</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 13px">
+              <sc-for list="{{ areas }}" as="a" hint-placeholder-count="8">
+                <div style="display: grid; grid-template-columns: 150px 1fr 42px; align-items: center; gap: 14px">
+                  <span style="font-size: 14px; color: rgba(13,27,42,.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ a.label }}</span>
+                  <span style="height: 8px; border-radius: 999px; background: rgba(38,33,92,.09); overflow: hidden; display: block">
+                    <span style="display: block; height: 100%; border-radius: 999px; background: #534AB7; width: {{ a.w }}"></span>
+                  </span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C; text-align: right">{{ a.pct }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.05fr 1fr; gap: 1px; background: rgba(13,27,42,.08); border-top: 1px solid rgba(13,27,42,.08)">
+          <div style="background: #F8F7F2; padding: 30px 28px 34px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px">
+              <div style="font-size: 15.5px; font-weight: 600; color: #0D1B2A">Empleabilidad al primer año</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(13,27,42,.4)">por cohorte</div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; align-items: end">
+              <sc-for list="{{ cohorts }}" as="c" hint-placeholder-count="6">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 8px">
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #26215C; flex: none">{{ c.val }}</span>
+                  <span style="display: flex; align-items: flex-end; width: 100%; height: 110px; flex: none">
+                    <span style="display: block; width: 100%; flex: none; border-radius: 6px 6px 0 0; background: linear-gradient(180deg, #534AB7, #AFA9EC); height: {{ c.h }}"></span>
+                  </span>
+                  <span style="font-size: 12px; color: rgba(13,27,42,.5); flex: none">{{ c.year }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background: #F8F7F2; padding: 30px 28px 34px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px">
+              <div style="font-size: 15.5px; font-weight: 600; color: #0D1B2A">Top empleadores</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(13,27,42,.4)">egresados activos</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(13,27,42,.07)">
+                <span style="font-size: 14.5px; color: rgba(13,27,42,.78)">Banco de Chile</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C">1.284</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(13,27,42,.07)">
+                <span style="font-size: 14.5px; color: rgba(13,27,42,.78)">Falabella</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C">967</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(13,27,42,.07)">
+                <span style="font-size: 14.5px; color: rgba(13,27,42,.78)">Codelco</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C">803</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid rgba(13,27,42,.07)">
+                <span style="font-size: 14.5px; color: rgba(13,27,42,.78)">Accenture</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C">742</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0">
+                <span style="font-size: 14.5px; color: rgba(13,27,42,.78)">Google</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #26215C">318</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-top: 44px; font-size: 15.5px; color: rgba(248,247,242,.62)">
+        <div style="max-width: 300px">Exporta cualquier corte a CSV o consúmelo por API.</div>
+        <div style="max-width: 300px">Filtra por facultad, cohorte, país o industria.</div>
+        <div style="max-width: 300px">Cada métrica se recalcula con cada cambio detectado.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="como" style="padding: 110px 32px; border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #534AB7; margin-bottom: 26px">05 — Cómo funciona</div>
+      <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 62px; color: #0D1B2A">Tres pasos. Sin proyecto interno.</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px">
+        <div style="padding: 34px 30px 38px; border-top: 2px solid #26215C">
+          <div style="font-family: Georgia, serif; font-size: 44px; color: rgba(38,33,92,.28); line-height: 1; margin-bottom: 22px">01</div>
+          <div style="font-size: 21px; font-weight: 600; color: #0D1B2A; margin-bottom: 10px">Conectas tu base</div>
+          <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">CSV, base de datos o API. Nombre y correo bastan para empezar.</div>
+        </div>
+        <div style="padding: 34px 30px 38px; border-top: 2px solid #534AB7">
+          <div style="font-family: Georgia, serif; font-size: 44px; color: rgba(83,74,183,.32); line-height: 1; margin-bottom: 22px">02</div>
+          <div style="font-size: 21px; font-weight: 600; color: #0D1B2A; margin-bottom: 10px">Enriquecemos</div>
+          <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">Match contra fuentes públicas, normalización y score de confianza por registro.</div>
+        </div>
+        <div style="padding: 34px 30px 38px; border-top: 2px solid #AFA9EC">
+          <div style="font-family: Georgia, serif; font-size: 44px; color: rgba(175,169,236,.75); line-height: 1; margin-bottom: 22px">03</div>
+          <div style="font-size: 21px; font-weight: 600; color: #0D1B2A; margin-bottom: 10px">Monitoreamos</div>
+          <div style="font-size: 15.5px; line-height: 1.55; color: rgba(13,27,42,.6)">Cada cambio laboral dispara un evento hacia tu sistema. Para siempre.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="api" style="background: #0D1B2A; color: #F8F7F2; padding: 110px 32px">
+    <div style="max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: .9fr 1.1fr; gap: 66px; align-items: center">
+      <div>
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: rgba(175,169,236,.8); margin-bottom: 26px">06 — API</div>
+        <h2 style="font-family: Georgia, serif; font-size: 50px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 20px; text-wrap: pretty">Datos donde ya trabajas.</h2>
+        <p style="font-size: 18.5px; line-height: 1.55; color: rgba(248,247,242,.6); margin: 0 0 32px">
+          REST documentada, webhooks de cambio y exportaciones. Tu equipo integra a Salesforce, HubSpot o el CRM que tengan en una tarde.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 15.5px; color: rgba(248,247,242,.75)">
+          <div style="display: flex; gap: 12px; align-items: center"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AFA9EC"></span>Autenticación por API key</div>
+          <div style="display: flex; gap: 12px; align-items: center"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AFA9EC"></span>Webhooks de cambio laboral</div>
+          <div style="display: flex; gap: 12px; align-items: center"><span style="width: 5px; height: 5px; border-radius: 50%; background: #AFA9EC"></span>Batch y streaming</div>
+        </div>
+      </div>
+      <div style="position: relative; border-radius: 16px; background: rgba(248,247,242,.04); border: 1px solid rgba(175,169,236,.18); overflow: hidden">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 1px solid rgba(248,247,242,.08); font-family: 'JetBrains Mono', monospace; font-size: 12px; color: rgba(175,169,236,.85)">
+          <span style="padding: 3px 8px; border-radius: 5px; background: rgba(175,169,236,.16)">GET</span>
+          /v1/people/a1f3c/enriched
+        </div>
+        <pre style="margin: 0; padding: 24px 26px 28px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.75; color: rgba(248,247,242,.82); overflow-x: auto">{
+  <span style="color: #AFA9EC">"full_name"</span>: "Camila Rojas Vergara",
+  <span style="color: #AFA9EC">"company"</span>:   "Falabella Retail",
+  <span style="color: #AFA9EC">"title"</span>:     "Head of Data Science",
+  <span style="color: #AFA9EC">"seniority"</span>: "director",
+  <span style="color: #AFA9EC">"industry"</span>:  "retail",
+  <span style="color: #AFA9EC">"location"</span>:  "Santiago, CL",
+  <span style="color: #AFA9EC">"since"</span>:     "2025-11-03",
+  <span style="color: #AFA9EC">"confidence"</span>: 0.94,
+  <span style="color: #AFA9EC">"last_verified"</span>: "2026-07-24"
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacidad" style="padding: 110px 32px; border-bottom: 1px solid rgba(13,27,42,.08)">
+    <div style="max-width: 1180px; margin: 0 auto">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: #534AB7; margin-bottom: 26px">07 — Privacidad</div>
+      <h2 style="font-family: Georgia, serif; font-size: 54px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 20px; color: #0D1B2A; max-width: 780px; text-wrap: pretty">Solo datos públicos. Solo lo que corresponde.</h2>
+      <p style="font-size: 19px; line-height: 1.55; color: rgba(13,27,42,.62); margin: 0 0 58px; max-width: 620px">
+        Trabajamos exclusivamente con información profesional de acceso público y bajo marco legal vigente.
+      </p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px">
+        <div style="padding: 32px 30px; border-radius: 14px; border: 1px solid rgba(13,27,42,.1); background: #FFFFFF">
+          <div style="font-family: Georgia, serif; font-size: 22px; color: #26215C; margin-bottom: 10px">GDPR</div>
+          <div style="font-size: 15px; line-height: 1.55; color: rgba(13,27,42,.6)">Base legal de interés legítimo, derecho de acceso y supresión operativo.</div>
+        </div>
+        <div style="padding: 32px 30px; border-radius: 14px; border: 1px solid rgba(13,27,42,.1); background: #FFFFFF">
+          <div style="font-family: Georgia, serif; font-size: 22px; color: #26215C; margin-bottom: 10px">CCPA</div>
+          <div style="font-size: 15px; line-height: 1.55; color: rgba(13,27,42,.6)">Opt-out honrado en toda la cadena y trazabilidad de cada fuente.</div>
+        </div>
+        <div style="padding: 32px 30px; border-radius: 14px; border: 1px solid rgba(13,27,42,.1); background: #FFFFFF">
+          <div style="font-family: Georgia, serif; font-size: 22px; color: #26215C; margin-bottom: 10px">Ley 21.719</div>
+          <div style="font-size: 15px; line-height: 1.55; color: rgba(13,27,42,.6)">Cumplimiento con la ley chilena de protección de datos personales.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" style="position: relative; padding: 132px 32px; background: #26215C; color: #F8F7F2; overflow: hidden">
+    <div style="position: absolute; top: 50%; left: 50%; width: 1000px; height: 1000px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(175,169,236,.22), transparent 62%); animation: argosPulse 7s ease-in-out infinite; pointer-events: none"></div>
+    <div style="position: relative; max-width: 780px; margin: 0 auto; text-align: center">
+      <svg width="46" height="46" viewBox="0 0 32 32" fill="none" style="display: block; margin: 0 auto 30px; animation: argosBlink 6s ease-in-out infinite; transform-origin: center">
+        <path d="M1.5 16C6 8.5 10.8 5 16 5s10 3.5 14.5 11C26 23.5 21.2 27 16 27S6 23.5 1.5 16Z" stroke="#AFA9EC" stroke-width="1.6" fill="none"></path>
+        <circle cx="16" cy="16" r="6" fill="#AFA9EC"></circle>
+        <circle cx="16" cy="16" r="2.4" fill="#26215C"></circle>
+        <circle cx="18.2" cy="13.4" r="1.1" fill="#F8F7F2"></circle>
+      </svg>
+      <h2 style="font-family: Georgia, serif; font-size: 62px; line-height: 1.05; letter-spacing: -.025em; margin: 0 0 20px; text-wrap: pretty">Ve lo que otros no ven.</h2>
+      <p style="font-size: 19.5px; line-height: 1.55; color: rgba(248,247,242,.68); margin: 0 auto 40px; max-width: 500px">
+        Envíanos una muestra de 500 registros. Te devolvemos el enriquecimiento en 48 horas.
+      </p>
+      <a href="#demo" style="display: inline-flex; align-items: center; padding: 17px 38px; border-radius: 999px; background: #F8F7F2; color: #26215C; font-size: 17px; font-weight: 600" style-hover="background: #AFA9EC">{{ ctaLabel }}</a>
+    </div>
+  </section>
+
+  <footer style="background: #0D1B2A; color: rgba(248,247,242,.55); padding: 46px 32px">
+    <div style="max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; font-size: 14px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <span style="font-family: Georgia, serif; font-size: 20px; color: #F8F7F2">Argos</span>
+        <span style="color: rgba(248,247,242,.35)">Data Enrichment & Monitoring</span>
+      </div>
+      <div style="display: flex; gap: 26px">
+        <a href="#privacidad" style="color: rgba(248,247,242,.55)">Privacidad</a>
+        <a href="#api" style="color: rgba(248,247,242,.55)">API</a>
+        <a href="#demo" style="color: rgba(248,247,242,.55)">Contacto</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;matchRate&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:79,&quot;min&quot;:50,&quot;max&quot;:99,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;ctaLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Agenda un demo&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;showLiveTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  state = { tick: 0 };
+
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState(s => ({ tick: s.tick + 1 })), 3200);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+
+  renderVals() {
+    const feed = [
+      { initials: "CR", name: "Camila Rojas — Ing. Civil Industrial ’14", change: "Analista → Head of Data Science · Falabella", ago: "hace 2 min" },
+      { initials: "MF", name: "Matías Fuenzalida — Derecho ’09", change: "Se une a Bain & Company como Principal", ago: "hace 9 min" },
+      { initials: "AS", name: "Antonia Silva — MBA ’18", change: "VP Operations · Cornershop", ago: "hace 21 min" },
+      { initials: "JP", name: "Joaquín Pérez — Ing. Comercial ’11", change: "Fundador · Sierra Capital", ago: "hace 34 min" },
+      { initials: "LM", name: "Laura Méndez — Bioquímica ’16", change: "Research Lead · Genosur", ago: "hace 52 min" }
+    ];
+    const k = this.state.tick % feed.length;
+    const events = feed.slice(k).concat(feed.slice(0, k)).slice(0, 4);
+
+    return {
+      events,
+      matchRate: this.props.matchRate ?? 79,
+      ctaLabel: this.props.ctaLabel ?? "Agenda un demo",
+      showLiveTicker: this.props.showLiveTicker ?? true,
+      seniority: [
+        { label: "C-Level / Founder", pct: 7, w: "7%", tone: "#26215C" },
+        { label: "VP / Director", pct: 14, w: "14%", tone: "#3F369A" },
+        { label: "Manager", pct: 27, w: "27%", tone: "#534AB7" },
+        { label: "Senior / Especialista", pct: 31, w: "31%", tone: "#8079D0" },
+        { label: "Analista / Entry", pct: 21, w: "21%", tone: "#AFA9EC" }
+      ],
+      areas: [
+        { label: "Ingeniería & Tech", pct: "22%", w: "88%" },
+        { label: "Finanzas", pct: "18%", w: "72%" },
+        { label: "Ventas & Comercial", pct: "15%", w: "60%" },
+        { label: "Operaciones", pct: "13%", w: "52%" },
+        { label: "Marketing", pct: "11%", w: "44%" },
+        { label: "Recursos Humanos", pct: "8%", w: "32%" },
+        { label: "Legal", pct: "7%", w: "28%" },
+        { label: "Otros", pct: "6%", w: "24%" }
+      ],
+      cohorts: [71, 62, 76, 81, 84, 88].map((v, i) => ({
+        year: String(2019 + i),
+        val: v + "%",
+        h: Math.round(22 + ((v - 60) / 30) * 78) + "%"
+      })),
+      rows: [
+        { label: "Empresa", before: "— vacío —", after: "Falabella Retail" },
+        { label: "Cargo", before: "Analista Jr. (2016)", after: "Head of Data Science" },
+        { label: "Seniority", before: "— vacío —", after: "Director" },
+        { label: "Industria", before: "— vacío —", after: "Retail" },
+        { label: "Ubicación", before: "Chile", after: "Santiago, RM" },
+        { label: "Historial", before: "— vacío —", after: "4 posiciones · 10 años" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Argos — Plataforma Alumni</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F8F7F2; color: #0D1B2A; font-family: "Instrument Sans", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #534AB7; text-decoration: none; }
+  a:hover { color: #26215C; }
+  ::selection { background: #AFA9EC; color: #26215C; }
+  input, button, select { font-family: inherit; }
+  @keyframes argosDot { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
+  @keyframes argosFade { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+</style>
+</helmet>
+
+<div style="display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; background: #F8F7F2">
+
+  <aside style="background: #0D1B2A; color: #F8F7F2; padding: 22px 16px; display: flex; flex-direction: column; gap: 30px; position: sticky; top: 0; height: 100vh">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" style="display: block; flex: none">
+        <path d="M1.5 16C6 8.5 10.8 5 16 5s10 3.5 14.5 11C26 23.5 21.2 27 16 27S6 23.5 1.5 16Z" stroke="#AFA9EC" stroke-width="1.8" fill="none"></path>
+        <circle cx="16" cy="16" r="6" fill="#AFA9EC"></circle>
+        <circle cx="16" cy="16" r="2.4" fill="#0D1B2A"></circle>
+        <circle cx="18.2" cy="13.4" r="1.05" fill="#F8F7F2"></circle>
+      </svg>
+      <span style="font-family: Georgia, 'Times New Roman', serif; font-size: 22px; color: #F8F7F2; letter-spacing: -.01em">Argos</span>
+    </div>
+
+    <nav style="display: flex; flex-direction: column; gap: 3px">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+        <button type="button" onClick="{{ item.go }}" style="display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; padding: 10px 12px; border: 0; border-radius: 9px; cursor: pointer; font-size: 14.5px; background: {{ item.bg }}; color: {{ item.fg }}; font-weight: {{ item.weight }}">
+          <span style="width: 18px; display: flex; justify-content: center; opacity: .9">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: block">
+              <path d="{{ item.icon }}"></path>
+            </svg>
+          </span>
+          <span style="flex: 1">{{ item.label }}</span>
+          <sc-if value="{{ item.badge }}" hint-placeholder-val="{{ false }}">
+            <span style="padding: 1px 7px; border-radius: 999px; background: #534AB7; color: #F8F7F2; font-size: 11.5px; font-weight: 600">{{ item.badge }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="margin-top: auto; padding: 16px; border-radius: 12px; background: rgba(175,169,236,.1); border: 1px solid rgba(175,169,236,.16)">
+      <div style="font-size: 13px; color: rgba(248,247,242,.65); line-height: 1.5; margin-bottom: 12px">Enriquecimiento del mes<br />33.428 / 42.317 registros</div>
+      <div style="height: 6px; border-radius: 999px; background: rgba(248,247,242,.12); overflow: hidden">
+        <div style="height: 100%; width: 79%; background: #AFA9EC; border-radius: 999px"></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 7px; margin-top: 12px; font-size: 12px; color: rgba(175,169,236,.9)">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #AFA9EC; animation: argosDot 1.6s ease-in-out infinite"></span>
+        Sincronizado hoy 06:40
+      </div>
+    </div>
+  </aside>
+
+  <main style="min-width: 0; display: flex; flex-direction: column">
+
+    <header style="position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 32px; background: rgba(248,247,242,.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(13,27,42,.09)">
+      <div style="display: flex; align-items: center; gap: 14px; min-width: 0">
+        <div style="font-size: 20px; font-weight: 600; letter-spacing: -.01em; color: #0D1B2A">{{ screenTitle }}</div>
+        <span style="width: 1px; height: 20px; background: rgba(13,27,42,.14)"></span>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 5px 12px 5px 6px; border-radius: 999px; background: rgba(38,33,92,.06)">
+          <span style="width: 22px; height: 22px; border-radius: 6px; background: #26215C; color: #F8F7F2; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">UDD</span>
+          <span style="font-size: 13.5px; color: #26215C">Universidad del Desarrollo</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <button type="button" style="display: flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1px solid rgba(13,27,42,.14); border-radius: 9px; background: #FFFFFF; cursor: pointer; font-size: 13.5px; color: #0D1B2A" style-hover="border-color: #534AB7; color: #534AB7">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16"></path></svg>
+          Exportar
+        </button>
+        <div style="display: flex; align-items: center; gap: 9px; padding: 5px 12px 5px 5px; border-radius: 999px; border: 1px solid rgba(13,27,42,.12); background: #FFFFFF">
+          <span style="width: 26px; height: 26px; border-radius: 50%; background: #534AB7; color: #F8F7F2; font-size: 11.5px; font-weight: 600; display: flex; align-items: center; justify-content: center">VM</span>
+          <span style="font-size: 13.5px; color: #0D1B2A">Valentina Muñoz</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─────────────── DASHBOARD ─────────────── -->
+    <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+      <div style="padding: 28px 32px 56px; display: flex; flex-direction: column; gap: 20px; animation: argosFade .3s ease-out both">
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+          <span style="font-size: 13px; color: rgba(13,27,42,.5); margin-right: 4px">Facultad</span>
+          <sc-for list="{{ faculties }}" as="f" hint-placeholder-count="6">
+            <button type="button" onClick="{{ f.go }}" style="padding: 7px 14px; border-radius: 999px; cursor: pointer; font-size: 13.5px; border: 1px solid {{ f.border }}; background: {{ f.bg }}; color: {{ f.fg }}">{{ f.label }}</button>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px">
+          <div style="padding: 22px 24px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 13px; color: rgba(13,27,42,.52); margin-bottom: 12px">Egresados en la base</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 40px; line-height: 1; color: #0D1B2A; letter-spacing: -.02em">42.317</div>
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-top: 10px">cohortes 1998 — 2024</div>
+          </div>
+          <div style="padding: 22px 24px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 13px; color: rgba(13,27,42,.52); margin-bottom: 12px">Match LinkedIn</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 40px; line-height: 1; color: #26215C; letter-spacing: -.02em">79,0%</div>
+            <div style="height: 6px; margin-top: 14px; border-radius: 999px; background: rgba(38,33,92,.09); overflow: hidden">
+              <div style="height: 100%; width: 79%; border-radius: 999px; background: #534AB7"></div>
+            </div>
+          </div>
+          <div style="padding: 22px 24px; border-radius: 14px; background: #26215C; color: #F8F7F2">
+            <div style="font-size: 13px; color: rgba(248,247,242,.66); margin-bottom: 12px">Cambios de trabajo · agosto</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 40px; line-height: 1; letter-spacing: -.02em">1.164</div>
+            <div style="font-size: 12.5px; color: #AFA9EC; margin-top: 10px">+14% vs. julio · 312 sin revisar</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; align-items: start">
+          <div style="padding: 24px 26px 28px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px">
+              <div style="font-size: 15.5px; font-weight: 600">Distribución por seniority</div>
+              <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11px; color: rgba(13,27,42,.4)">33.428 con match</div>
+            </div>
+            <div style="display: flex; height: 12px; border-radius: 999px; overflow: hidden; margin-bottom: 24px">
+              <sc-for list="{{ seniority }}" as="s" hint-placeholder-count="8">
+                <div style="height: 100%; background: {{ s.tone }}; width: {{ s.w }}"></div>
+              </sc-for>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px 30px">
+              <sc-for list="{{ seniority }}" as="s" hint-placeholder-count="8">
+                <div style="display: flex; align-items: center; gap: 10px">
+                  <span style="flex: none; width: 9px; height: 9px; border-radius: 3px; background: {{ s.tone }}"></span>
+                  <span style="flex: 1; font-size: 14px; color: rgba(13,27,42,.74)">{{ s.label }}</span>
+                  <span style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 13px; color: #26215C">{{ s.pct }}%</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="padding: 24px 26px 28px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px">
+              <div style="font-size: 15.5px; font-weight: 600">Área de trabajo</div>
+              <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11px; color: rgba(13,27,42,.4)">% de la base</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 11px">
+              <sc-for list="{{ areas }}" as="a" hint-placeholder-count="11">
+                <div style="display: grid; grid-template-columns: 118px 1fr 40px; align-items: center; gap: 12px">
+                  <span style="font-size: 13.5px; color: rgba(13,27,42,.74); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ a.label }}</span>
+                  <span style="display: block; height: 8px; border-radius: 999px; background: rgba(38,33,92,.08); overflow: hidden">
+                    <span style="display: block; height: 100%; border-radius: 999px; background: #534AB7; width: {{ a.w }}"></span>
+                  </span>
+                  <span style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12.5px; color: #26215C; text-align: right">{{ a.pct }}%</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 24px 26px 12px; border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px">
+            <div style="font-size: 15.5px; font-weight: 600">Últimos cambios detectados</div>
+            <button type="button" onClick="{{ goAlerts }}" style="padding: 7px 13px; border: 1px solid rgba(13,27,42,.14); border-radius: 8px; background: #FFFFFF; cursor: pointer; font-size: 13px; color: #534AB7" style-hover="border-color: #534AB7">Ver todas las alertas</button>
+          </div>
+          <sc-for list="{{ feed }}" as="ev" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 40px 1.1fr 1.5fr 150px 96px; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid rgba(13,27,42,.07)">
+              <span style="width: 36px; height: 36px; border-radius: 50%; background: {{ ev.tone }}; color: #FFFFFF; font-size: 12.5px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{ ev.initials }}</span>
+              <div style="min-width: 0">
+                <button type="button" onClick="{{ ev.open }}" style="border: 0; background: transparent; padding: 0; cursor: pointer; font-size: 14.5px; font-weight: 500; color: #0D1B2A; font-family: inherit" style-hover="color: #534AB7">{{ ev.name }}</button>
+                <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-top: 2px">{{ ev.career }} · {{ ev.year }}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; min-width: 0; font-size: 13.5px">
+                <span style="color: rgba(13,27,42,.45); text-decoration: line-through; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ ev.from }}</span>
+                <span style="color: #AFA9EC; flex: none">→</span>
+                <span style="color: #26215C; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ ev.to }}</span>
+              </div>
+              <div style="font-size: 13.5px; color: rgba(13,27,42,.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ ev.company }}</div>
+              <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12px; color: rgba(13,27,42,.45); text-align: right">{{ ev.date }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ─────────────── EGRESADOS ─────────────── -->
+    <sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+      <div style="display: grid; grid-template-columns: 238px 1fr; gap: 0; align-items: start; animation: argosFade .3s ease-out both">
+
+        <div style="padding: 24px 22px 56px; border-right: 1px solid rgba(13,27,42,.09); position: sticky; top: 69px">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px">
+            <span style="font-size: 13.5px; font-weight: 600; color: #0D1B2A">Filtros</span>
+            <span style="font-size: 12.5px; color: #534AB7; cursor: pointer">Limpiar</span>
+          </div>
+          <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="5">
+            <div style="padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid rgba(13,27,42,.08)">
+              <div style="font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: rgba(13,27,42,.45); margin-bottom: 12px">{{ g.title }}</div>
+              <div style="display: flex; flex-direction: column; gap: 9px">
+                <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+                  <label style="display: flex; align-items: center; gap: 9px; font-size: 13.5px; color: rgba(13,27,42,.75); cursor: pointer">
+                    <span style="width: 15px; height: 15px; flex: none; border-radius: 4px; border: 1.5px solid {{ o.border }}; background: {{ o.fill }}; display: flex; align-items: center; justify-content: center">
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" style="display: {{ o.check }}"><path d="M20 6 9 17l-5-5"></path></svg>
+                    </span>
+                    <span style="flex: 1">{{ o.label }}</span>
+                    <span style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11.5px; color: rgba(13,27,42,.38)">{{ o.count }}</span>
+                  </label>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <div>
+            <div style="font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: rgba(13,27,42,.45); margin-bottom: 12px">Año de egreso</div>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="flex: 1; padding: 7px 10px; border: 1px solid rgba(13,27,42,.14); border-radius: 7px; background: #FFFFFF; font-size: 13px; color: #0D1B2A">2005</span>
+              <span style="color: rgba(13,27,42,.4)">—</span>
+              <span style="flex: 1; padding: 7px 10px; border: 1px solid rgba(13,27,42,.14); border-radius: 7px; background: #FFFFFF; font-size: 13px; color: #0D1B2A">2024</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="min-width: 0; padding: 24px 32px 56px; display: flex; flex-direction: column; gap: 18px">
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap">
+            <div style="display: flex; align-items: center; gap: 9px; flex: 1; min-width: 260px; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(13,27,42,.14); background: #FFFFFF">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(13,27,42,.45)" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4.2-4.2"></path></svg>
+              <input type="text" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Buscar por nombre…" style="flex: 1; border: 0; outline: none; background: transparent; font-size: 14px; color: #0D1B2A" />
+            </div>
+            <span style="font-size: 13.5px; color: rgba(13,27,42,.55)">{{ peopleCount }} egresados</span>
+            <button type="button" style="display: flex; align-items: center; gap: 7px; padding: 10px 14px; border: 1px solid rgba(13,27,42,.14); border-radius: 10px; background: #FFFFFF; cursor: pointer; font-size: 13.5px; color: #0D1B2A" style-hover="border-color: #534AB7; color: #534AB7">CSV</button>
+            <button type="button" style="display: flex; align-items: center; gap: 7px; padding: 10px 16px; border: 0; border-radius: 10px; background: #26215C; color: #F8F7F2; cursor: pointer; font-size: 13.5px; font-weight: 500" style-hover="background: #534AB7">Exportar Excel</button>
+          </div>
+
+          <div style="border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08); overflow: hidden">
+           <div style="overflow-x: auto">
+            <div style="display: grid; grid-template-columns: minmax(268px,2.1fr) minmax(140px,1.4fr) minmax(110px,1fr) minmax(92px,.85fr) minmax(112px,.95fr) minmax(88px,.8fr) 70px 92px; gap: 0; padding: 0 20px; min-width: 980px; background: rgba(38,33,92,.04); border-bottom: 1px solid rgba(13,27,42,.09); font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: rgba(13,27,42,.5)">
+              <div style="padding: 13px 10px 13px 0">Egresado</div>
+              <div style="padding: 13px 10px">Cargo actual</div>
+              <div style="padding: 13px 10px">Empresa</div>
+              <div style="padding: 13px 10px">Área</div>
+              <div style="padding: 13px 10px">Seniority</div>
+              <div style="padding: 13px 10px">Ciudad</div>
+              <div style="padding: 13px 10px">Egreso</div>
+              <div style="padding: 13px 0 13px 10px; text-align: right">Actualizado</div>
+            </div>
+            <sc-for list="{{ people }}" as="p" hint-placeholder-count="9">
+              <div style="display: grid; grid-template-columns: minmax(268px,2.1fr) minmax(140px,1.4fr) minmax(110px,1fr) minmax(92px,.85fr) minmax(112px,.95fr) minmax(88px,.8fr) 70px 92px; gap: 0; padding: 0 20px; min-width: 980px; border-bottom: 1px solid rgba(13,27,42,.06); align-items: center; cursor: pointer" style-hover="background: rgba(175,169,236,.09)" onClick="{{ p.open }}">
+                <div style="display: flex; align-items: center; gap: 11px; padding: 12px 10px 12px 0; min-width: 0">
+                  <span style="flex: none; width: 34px; height: 34px; border-radius: 50%; background: {{ p.tone }}; color: #FFFFFF; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{ p.initials }}</span>
+                  <div style="min-width: 0">
+                    <div style="display: flex; align-items: center; gap: 7px">
+                      <span style="font-size: 14px; font-weight: 500; color: #0D1B2A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.name }}</span>
+                      <sc-if value="{{ p.recent }}" hint-placeholder-val="{{ false }}">
+                        <span style="flex: none; padding: 2px 7px; margin-left: auto; border-radius: 999px; background: rgba(83,74,183,.13); color: #534AB7; font-size: 10.5px; font-weight: 600; white-space: nowrap">nuevo cargo</span>
+                      </sc-if>
+                    </div>
+                    <div style="font-size: 12px; color: rgba(13,27,42,.48); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.career }}</div>
+                  </div>
+                </div>
+                <div style="padding: 12px 10px; font-size: 13.5px; color: rgba(13,27,42,.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.title }}</div>
+                <div style="padding: 12px 10px; font-size: 13.5px; color: rgba(13,27,42,.8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.company }}</div>
+                <div style="padding: 12px 10px; font-size: 13px; color: rgba(13,27,42,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.area }}</div>
+                <div style="padding: 12px 10px">
+                  <span style="display: inline-block; padding: 3px 9px; border-radius: 6px; background: rgba(38,33,92,.07); color: #26215C; font-size: 12px; white-space: nowrap">{{ p.seniority }}</span>
+                </div>
+                <div style="padding: 12px 10px; font-size: 13px; color: rgba(13,27,42,.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.city }}</div>
+                <div style="padding: 12px 10px; font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12.5px; color: rgba(13,27,42,.6)">{{ p.year }}</div>
+                <div style="padding: 12px 0 12px 10px; font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12px; color: rgba(13,27,42,.42); text-align: right">{{ p.updated }}</div>
+              </div>
+            </sc-for>
+           </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; font-size: 13px; color: rgba(13,27,42,.5)">
+              <span>Mostrando 1–9 de 33.428</span>
+              <div style="display: flex; align-items: center; gap: 6px">
+                <span style="padding: 5px 11px; border-radius: 7px; border: 1px solid rgba(13,27,42,.12); background: #FFFFFF">Anterior</span>
+                <span style="padding: 5px 11px; border-radius: 7px; background: #26215C; color: #F8F7F2">1</span>
+                <span style="padding: 5px 11px; border-radius: 7px; border: 1px solid rgba(13,27,42,.12); background: #FFFFFF">2</span>
+                <span style="padding: 5px 11px; border-radius: 7px; border: 1px solid rgba(13,27,42,.12); background: #FFFFFF">3</span>
+                <span style="padding: 5px 11px; border-radius: 7px; border: 1px solid rgba(13,27,42,.12); background: #FFFFFF">Siguiente</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="border-radius: 14px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08); overflow-x: auto">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 20px 22px 16px">
+              <div style="font-size: 15.5px; font-weight: 600">Empresas con más egresados</div>
+              <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11px; color: rgba(13,27,42,.4)">top 10 de 8.412</div>
+            </div>
+            <sc-for list="{{ companies }}" as="c" hint-placeholder-count="10">
+              <div style="display: grid; grid-template-columns: 34px minmax(180px,1.6fr) minmax(70px,200px) 76px; align-items: center; gap: 14px; padding: 11px 22px; border-top: 1px solid rgba(13,27,42,.06); min-width: 440px">
+                <span style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12.5px; color: rgba(13,27,42,.35)">{{ c.rank }}</span>
+                <span style="font-size: 14px; color: #0D1B2A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ c.name }}</span>
+                <span style="display: block; height: 7px; border-radius: 999px; background: rgba(38,33,92,.08); overflow: hidden">
+                  <span style="display: block; height: 100%; border-radius: 999px; background: #AFA9EC; width: {{ c.w }}"></span>
+                </span>
+                <span style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 13px; color: #26215C; text-align: right">{{ c.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ─────────────── PERFIL ─────────────── -->
+    <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 24px 32px 56px; animation: argosFade .3s ease-out both">
+        <button type="button" onClick="{{ goPeople }}" style="display: flex; align-items: center; gap: 7px; margin-bottom: 20px; padding: 0; border: 0; background: transparent; cursor: pointer; font-size: 13.5px; color: #534AB7; font-family: inherit">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg>
+          Volver a egresados
+        </button>
+
+        <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; align-items: start">
+          <div style="display: flex; flex-direction: column; gap: 18px">
+            <div style="border-radius: 16px; overflow: hidden; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+              <div style="height: 92px; background: linear-gradient(110deg, #26215C, #534AB7)"></div>
+              <div style="padding: 0 28px 26px; margin-top: -38px">
+                <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap">
+                  <div style="display: flex; align-items: flex-end; gap: 18px">
+                    <span style="width: 84px; height: 84px; flex: none; border-radius: 50%; border: 4px solid #FFFFFF; background: #534AB7; color: #FFFFFF; font-size: 27px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{ profile.initials }}</span>
+                    <div style="padding-bottom: 6px">
+                      <div style="font-size: 25px; font-weight: 600; letter-spacing: -.015em; color: #0D1B2A">{{ profile.name }}</div>
+                      <div style="font-size: 15px; color: rgba(13,27,42,.68); margin-top: 3px">{{ profile.title }} · {{ profile.company }}</div>
+                    </div>
+                  </div>
+                  <a href="#linkedin" style="display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: #26215C; color: #F8F7F2; font-size: 14px; font-weight: 500; margin-bottom: 6px" style-hover="background: #534AB7">
+                    Ver en LinkedIn
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+                  </a>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px">
+                  <span style="padding: 5px 12px; border-radius: 999px; background: #26215C; color: #F8F7F2; font-size: 12.5px">{{ profile.seniority }}</span>
+                  <span style="padding: 5px 12px; border-radius: 999px; background: rgba(83,74,183,.12); color: #534AB7; font-size: 12.5px">{{ profile.area }}</span>
+                  <span style="padding: 5px 12px; border-radius: 999px; background: rgba(13,27,42,.06); color: rgba(13,27,42,.7); font-size: 12.5px">{{ profile.city }}</span>
+                  <span style="padding: 5px 12px; border-radius: 999px; background: rgba(13,27,42,.06); color: rgba(13,27,42,.7); font-size: 12.5px">Egreso {{ profile.year }}</span>
+                  <span style="display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(83,74,183,.3); color: #534AB7; font-size: 12.5px">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: #534AB7"></span>
+                    match 0,96
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style="padding: 24px 28px 28px; border-radius: 16px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px">
+                <div style="font-size: 15.5px; font-weight: 600">Historial laboral</div>
+                <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11px; color: rgba(13,27,42,.4)">5 posiciones · 13 años</div>
+              </div>
+              <div style="display: flex; flex-direction: column">
+                <sc-for list="{{ profile.history }}" as="h" hint-placeholder-count="5">
+                  <div style="display: grid; grid-template-columns: 30px 1fr; gap: 16px">
+                    <div style="display: flex; flex-direction: column; align-items: center">
+                      <span style="width: 11px; height: 11px; border-radius: 50%; background: {{ h.dot }}; border: 2.5px solid {{ h.ring }}; flex: none; margin-top: 4px"></span>
+                      <span style="width: 1.5px; flex: 1; background: rgba(38,33,92,.14); min-height: 14px"></span>
+                    </div>
+                    <div style="padding-bottom: 22px; min-width: 0">
+                      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap">
+                        <div style="font-size: 15px; font-weight: 600; color: #0D1B2A">{{ h.title }}</div>
+                        <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 12px; color: rgba(13,27,42,.45)">{{ h.period }}</div>
+                      </div>
+                      <div style="font-size: 13.5px; color: rgba(13,27,42,.65); margin-top: 3px">{{ h.company }} · {{ h.length }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 18px">
+            <div style="padding: 24px 26px 26px; border-radius: 16px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+              <div style="font-size: 15.5px; font-weight: 600; margin-bottom: 20px">Datos de contacto</div>
+              <div style="display: flex; flex-direction: column; gap: 16px">
+                <sc-for list="{{ profile.contacts }}" as="c" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 12px">
+                    <span style="flex: none; width: 32px; height: 32px; border-radius: 9px; background: rgba(38,33,92,.06); display: flex; align-items: center; justify-content: center">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ c.iconColor }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ c.icon }}"></path></svg>
+                    </span>
+                    <div style="min-width: 0; flex: 1">
+                      <div style="font-size: 11.5px; color: rgba(13,27,42,.45)">{{ c.label }}</div>
+                      <div style="font-size: 13.5px; color: {{ c.color }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ c.value }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="padding: 24px 26px 26px; border-radius: 16px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+              <div style="font-size: 15.5px; font-weight: 600; margin-bottom: 20px">Educación</div>
+              <div style="display: flex; flex-direction: column; gap: 18px">
+                <sc-for list="{{ profile.education }}" as="e" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 13px">
+                    <span style="flex: none; width: 34px; height: 34px; border-radius: 9px; background: {{ e.tone }}; color: #F8F7F2; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{ e.badge }}</span>
+                    <div>
+                      <div style="font-size: 14px; font-weight: 500; color: #0D1B2A">{{ e.degree }}</div>
+                      <div style="font-size: 13px; color: rgba(13,27,42,.6); margin-top: 2px">{{ e.school }}</div>
+                      <div style="font-variant-numeric: tabular-nums; font-weight: 500; font-size: 11.5px; color: rgba(13,27,42,.42); margin-top: 3px">{{ e.period }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="padding: 22px 26px 24px; border-radius: 16px; background: #0D1B2A; color: #F8F7F2">
+              <div style="font-size: 13px; color: rgba(248,247,242,.6); margin-bottom: 14px">Señales de Argos</div>
+              <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13.5px">
+                <div style="display: flex; justify-content: space-between; gap: 14px"><span style="color: rgba(248,247,242,.72)">Último cambio</span><span>4 ago 2026</span></div>
+                <div style="display: flex; justify-content: space-between; gap: 14px"><span style="color: rgba(248,247,242,.72)">Permanencia promedio</span><span>31 meses</span></div>
+                <div style="display: flex; justify-content: space-between; gap: 14px"><span style="color: rgba(248,247,242,.72)">Trayectoria</span><span style="color: #AFA9EC">ascendente</span></div>
+                <div style="display: flex; justify-content: space-between; gap: 14px"><span style="color: rgba(248,247,242,.72)">Verificado</span><span>28 ago 2026</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ─────────────── ALERTAS ─────────────── -->
+    <sc-if value="{{ isAlerts }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 24px 32px 56px; display: flex; flex-direction: column; gap: 18px; animation: argosFade .3s ease-out both">
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap">
+          <div style="display: flex; gap: 4px; padding: 4px; border-radius: 11px; background: rgba(38,33,92,.07)">
+            <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3">
+              <button type="button" onClick="{{ p.go }}" style="padding: 8px 18px; border: 0; border-radius: 8px; cursor: pointer; font-size: 13.5px; background: {{ p.bg }}; color: {{ p.fg }}; font-weight: {{ p.weight }}">{{ p.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="padding: 8px 14px; border-radius: 9px; border: 1px solid rgba(13,27,42,.14); background: #FFFFFF; font-size: 13.5px; color: rgba(13,27,42,.7)">Área: todas</span>
+            <span style="padding: 8px 14px; border-radius: 9px; border: 1px solid rgba(13,27,42,.14); background: #FFFFFF; font-size: 13.5px; color: rgba(13,27,42,.7)">Seniority: Gerente y superior</span>
+            <button type="button" style="padding: 9px 16px; border: 0; border-radius: 9px; background: #26215C; color: #F8F7F2; cursor: pointer; font-size: 13.5px; font-weight: 500" style-hover="background: #534AB7">Marcar todo como visto</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px">
+          <div style="padding: 18px 20px; border-radius: 13px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 8px">Cambios en {{ periodLabel }}</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 30px; color: #0D1B2A; line-height: 1">{{ alertStats.total }}</div>
+          </div>
+          <div style="padding: 18px 20px; border-radius: 13px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 8px">Sin revisar</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 30px; color: #534AB7; line-height: 1">{{ alertStats.unread }}</div>
+          </div>
+          <div style="padding: 18px 20px; border-radius: 13px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 8px">Ascensos</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 30px; color: #0D1B2A; line-height: 1">{{ alertStats.promos }}</div>
+          </div>
+          <div style="padding: 18px 20px; border-radius: 13px; background: #FFFFFF; border: 1px solid rgba(13,27,42,.08)">
+            <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-bottom: 8px">Nuevos C-Level</div>
+            <div style="font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; font-size: 30px; color: #0D1B2A; line-height: 1">{{ alertStats.clevel }}</div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="7">
+            <div style="display: grid; grid-template-columns: 44px 1.15fr 1.7fr auto; align-items: center; gap: 18px; padding: 16px 22px; border-radius: 13px; background: #FFFFFF; border: 1px solid {{ a.border }}">
+              <span style="width: 40px; height: 40px; border-radius: 50%; background: {{ a.tone }}; color: #FFFFFF; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{ a.initials }}</span>
+              <div style="min-width: 0">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <button type="button" onClick="{{ a.open }}" style="border: 0; background: transparent; padding: 0; cursor: pointer; font-family: inherit; font-size: 14.5px; font-weight: 500; color: #0D1B2A" style-hover="color: #534AB7">{{ a.name }}</button>
+                  <sc-if value="{{ a.isNew }}" hint-placeholder-val="{{ false }}">
+                    <span style="padding: 2px 8px; border-radius: 999px; background: #534AB7; color: #F8F7F2; font-size: 10.5px; font-weight: 600">nuevo</span>
+                  </sc-if>
+                </div>
+                <div style="font-size: 12.5px; color: rgba(13,27,42,.5); margin-top: 2px">{{ a.career }} · {{ a.seniority }} · {{ a.area }}</div>
+              </div>
+              <div style="min-width: 0">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 13.5px; min-width: 0">
+                  <span style="color: rgba(13,27,42,.45); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ a.fromCompany }}</span>
+                  <span style="color: #AFA9EC; flex: none">→</span>
+                  <span style="color: #26215C; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ a.toCompany }}</span>
+                </div>
+                <div style="font-size: 12.5px; color: rgba(13,27,42,.6); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ a.newTitle }} · detectado {{ a.date }}</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <button type="button" onClick="{{ a.seen }}" style="padding: 8px 14px; border: 1px solid rgba(13,27,42,.14); border-radius: 8px; background: #FFFFFF; cursor: pointer; font-size: 13px; color: {{ a.seenColor }}" style-hover="border-color: #534AB7">{{ a.seenLabel }}</button>
+                <button type="button" style="padding: 8px 14px; border: 0; border-radius: 8px; background: rgba(83,74,183,.12); color: #534AB7; cursor: pointer; font-size: 13px; font-weight: 500" style-hover="background: #534AB7; color: #F8F7F2">Contactar</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isStub }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 90px 32px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; animation: argosFade .3s ease-out both">
+        <svg width="34" height="34" viewBox="0 0 32 32" fill="none" style="display: block; opacity: .5">
+          <path d="M1.5 16C6 8.5 10.8 5 16 5s10 3.5 14.5 11C26 23.5 21.2 27 16 27S6 23.5 1.5 16Z" stroke="#26215C" stroke-width="1.8" fill="none"></path>
+          <circle cx="16" cy="16" r="5.5" fill="#AFA9EC"></circle>
+        </svg>
+        <div style="font-size: 19px; font-weight: 600; color: #0D1B2A">{{ screenTitle }}</div>
+        <div style="font-size: 14.5px; color: rgba(13,27,42,.55); max-width: 380px">Módulo fuera del alcance de este prototipo.</div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:950}}">
+const TONES = ["#26215C", "#534AB7", "#7C74C9", "#0D1B2A", "#8079D0"];
+
+const PEOPLE = [
+  { initials: "CR", name: "Camila Rojas Vergara", career: "Ing. Civil Industrial", title: "Head of Data Science", company: "Falabella", area: "Tecnología", seniority: "Subgerente", city: "Santiago", year: "2014", updated: "hace 2 d", recent: true },
+  { initials: "MF", name: "Matías Fuenzalida Soto", career: "Derecho", title: "Principal", company: "Bain & Company", area: "Estrategia", seniority: "Director", city: "Santiago", year: "2009", updated: "hace 5 d", recent: true },
+  { initials: "AS", name: "Antonia Silva Lagos", career: "MBA", title: "VP Operations", company: "Cornershop", area: "Operaciones", seniority: "Director", city: "Santiago", year: "2018", updated: "hace 6 d", recent: true },
+  { initials: "JP", name: "Joaquín Pérez Undurraga", career: "Ing. Comercial", title: "Socio fundador", company: "Sierra Capital", area: "Emprendimiento", seniority: "C-Level", city: "Santiago", year: "2011", updated: "hace 9 d", recent: false },
+  { initials: "LM", name: "Laura Méndez Cifuentes", career: "Bioquímica", title: "Research Lead", company: "Genosur", area: "Salud", seniority: "Jefatura", city: "Concepción", year: "2016", updated: "hace 11 d", recent: false },
+  { initials: "DT", name: "Diego Tapia Bravo", career: "Ing. Comercial", title: "Gerente de Finanzas", company: "Banco de Chile", area: "Finanzas", seniority: "Gerente", city: "Santiago", year: "2007", updated: "hace 14 d", recent: false },
+  { initials: "FN", name: "Francisca Navarro Ríos", career: "Periodismo", title: "Brand Manager", company: "CCU", area: "Marketing", seniority: "Profesional Senior", city: "Viña del Mar", year: "2019", updated: "hace 16 d", recent: false },
+  { initials: "SC", name: "Sebastián Contreras Díaz", career: "Psicología", title: "Business Partner RRHH", company: "Codelco", area: "RRHH", seniority: "Profesional", city: "Antofagasta", year: "2020", updated: "hace 19 d", recent: false },
+  { initials: "VA", name: "Valeria Arriagada Muñoz", career: "Pedagogía", title: "Directora académica", company: "Colegio Alcántara", area: "Educación", seniority: "Gerente", city: "Santiago", year: "2012", updated: "hace 23 d", recent: false }
+].map((p, i) => ({ ...p, tone: TONES[i % TONES.length] }));
+
+class Component extends DCLogic {
+  state = { screen: "dashboard", faculty: "Todas", period: "Último mes", query: "", seen: {} };
+
+  go = (screen) => () => this.setState({ screen });
+
+  renderVals() {
+    const s = this.state;
+    const titles = { dashboard: "Dashboard", people: "Egresados", profile: "Perfil de egresado", alerts: "Alertas de cambio", reports: "Reportes", settings: "Configuración" };
+    const icons = {
+      dashboard: "M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z",
+      people: "M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm13 13v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8",
+      alerts: "M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M13.7 21a2 2 0 0 1-3.4 0",
+      reports: "M3 3v18h18M7 15l4-5 3 3 5-7",
+      settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm8.4-3a8.4 8.4 0 0 0-.1-1.2l2-1.5-2-3.5-2.4 1a8 8 0 0 0-2-1.2L15.5 2h-4l-.4 2.6a8 8 0 0 0-2 1.2l-2.4-1-2 3.5 2 1.5a8.4 8.4 0 0 0 0 2.4l-2 1.5 2 3.5 2.4-1a8 8 0 0 0 2 1.2l.4 2.6h4l.4-2.6a8 8 0 0 0 2-1.2l2.4 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2Z"
+    };
+    const navItems = ["dashboard", "people", "alerts", "reports", "settings"].map(k => {
+      const active = s.screen === k || (k === "people" && s.screen === "profile");
+      return {
+        label: titles[k], icon: icons[k], go: this.go(k),
+        badge: k === "alerts" ? "312" : false,
+        bg: active ? "rgba(175,169,236,.16)" : "transparent",
+        fg: active ? "#F8F7F2" : "rgba(248,247,242,.62)",
+        weight: active ? 600 : 400
+      };
+    });
+
+    const faculties = ["Todas", "Ingeniería", "Economía y Negocios", "Derecho", "Medicina", "Comunicaciones"].map(f => {
+      const on = s.faculty === f;
+      return {
+        label: f, go: () => this.setState({ faculty: f }),
+        bg: on ? "#26215C" : "#FFFFFF",
+        fg: on ? "#F8F7F2" : "rgba(13,27,42,.7)",
+        border: on ? "#26215C" : "rgba(13,27,42,.14)"
+      };
+    });
+
+    const sen = [
+      ["C-Level", 4, "#26215C"], ["Director", 8, "#3B3392"], ["Gerente", 12, "#534AB7"],
+      ["Subgerente", 11, "#6A62C4"], ["Jefatura", 15, "#8079D0"], ["Profesional Senior", 23, "#9992DD"],
+      ["Profesional", 21, "#AFA9EC"], ["Trainee", 6, "#CFCBF4"]
+    ];
+    const seniority = sen.map(([label, pct, tone]) => ({ label, pct, tone, w: pct + "%" }));
+
+    const ar = [["Ventas", 13], ["Tecnología", 16], ["Finanzas", 14], ["Marketing", 9], ["Operaciones", 11], ["RRHH", 6], ["Legal", 7], ["Estrategia", 6], ["Emprendimiento", 5], ["Educación", 8], ["Salud", 5]];
+    const areas = ar.map(([label, pct]) => ({ label, pct, w: Math.round((pct / 16) * 100) + "%" }));
+
+    const feed = [
+      { p: PEOPLE[0], from: "Lead Analytics", to: "Head of Data Science", date: "27 ago" },
+      { p: PEOPLE[1], from: "Senior Associate", to: "Principal", date: "26 ago" },
+      { p: PEOPLE[2], from: "Directora de Operaciones", to: "VP Operations", date: "24 ago" },
+      { p: PEOPLE[4], from: "Investigadora", to: "Research Lead", date: "22 ago" },
+      { p: PEOPLE[5], from: "Subgerente de Finanzas", to: "Gerente de Finanzas", date: "21 ago" },
+      { p: PEOPLE[6], from: "Product Marketing", to: "Brand Manager", date: "19 ago" }
+    ].map(({ p, from, to, date }) => ({
+      initials: p.initials, tone: p.tone, name: p.name, career: p.career, year: p.year,
+      company: p.company, from, to, date, open: this.go("profile")
+    }));
+
+    const filterGroups = [
+      { title: "Seniority", options: [["C-Level", "1.337", true], ["Director", "2.674", true], ["Gerente", "4.011", false], ["Subgerente", "3.677", false]] },
+      { title: "Área", options: [["Tecnología", "5.348", true], ["Finanzas", "4.680", false], ["Ventas", "4.345", false], ["Operaciones", "3.677", false]] },
+      { title: "Empresa", options: [["Banco de Chile", "1.284", false], ["Falabella", "967", false], ["Codelco", "803", false]] },
+      { title: "Carrera", options: [["Ing. Comercial", "6.212", false], ["Derecho", "4.108", false], ["Ing. Civil Industrial", "3.940", false], ["Medicina", "2.611", false]] }
+    ].map(g => ({
+      title: g.title,
+      options: g.options.map(([label, count, on]) => ({
+        label, count,
+        border: on ? "#534AB7" : "rgba(13,27,42,.24)",
+        fill: on ? "#534AB7" : "#FFFFFF",
+        check: on ? "block" : "none"
+      }))
+    }));
+
+    const co = [["Banco de Chile", 1284], ["Falabella", 967], ["Codelco", 803], ["Accenture", 742], ["BCI", 688], ["Deloitte", 641], ["Entel", 597], ["Sonda", 512], ["Cencosud", 486], ["Google", 318]];
+    const companies = co.map(([name, count], i) => ({
+      rank: String(i + 1).padStart(2, "0"), name,
+      count: count.toLocaleString("es-CL"),
+      w: Math.round((count / 1284) * 100) + "%"
+    }));
+
+    const people = PEOPLE.map(p => ({ ...p, open: this.go("profile") }));
+
+    const periods = ["Último mes", "Último trimestre", "Último semestre"].map(label => {
+      const on = s.period === label;
+      return {
+        label, go: () => this.setState({ period: label }),
+        bg: on ? "#FFFFFF" : "transparent",
+        fg: on ? "#26215C" : "rgba(13,27,42,.6)",
+        weight: on ? 600 : 400
+      };
+    });
+    const stats = {
+      "Último mes": { total: "1.164", unread: "312", promos: "486", clevel: "24" },
+      "Último trimestre": { total: "3.402", unread: "912", promos: "1.388", clevel: "71" },
+      "Último semestre": { total: "6.815", unread: "1.744", promos: "2.803", clevel: "142" }
+    }[s.period];
+
+    const alerts = [
+      { p: PEOPLE[0], fromCompany: "Cencosud", toCompany: "Falabella", newTitle: "Head of Data Science", date: "27 ago 2026", isNew: true },
+      { p: PEOPLE[1], fromCompany: "Carey Abogados", toCompany: "Bain & Company", newTitle: "Principal", date: "26 ago 2026", isNew: true },
+      { p: PEOPLE[2], fromCompany: "Rappi", toCompany: "Cornershop", newTitle: "VP Operations", date: "24 ago 2026", isNew: true },
+      { p: PEOPLE[4], fromCompany: "Universidad de Chile", toCompany: "Genosur", newTitle: "Research Lead", date: "22 ago 2026", isNew: false },
+      { p: PEOPLE[5], fromCompany: "Banco de Chile", toCompany: "Banco de Chile", newTitle: "Gerente de Finanzas (ascenso)", date: "21 ago 2026", isNew: false },
+      { p: PEOPLE[6], fromCompany: "Watt's", toCompany: "CCU", newTitle: "Brand Manager", date: "19 ago 2026", isNew: false },
+      { p: PEOPLE[3], fromCompany: "LarrainVial", toCompany: "Sierra Capital", newTitle: "Socio fundador", date: "16 ago 2026", isNew: false }
+    ].map((a, i) => {
+      const seen = !!s.seen[i];
+      return {
+        initials: a.p.initials, tone: a.p.tone, name: a.p.name, career: a.p.career,
+        seniority: a.p.seniority, area: a.p.area,
+        fromCompany: a.fromCompany, toCompany: a.toCompany, newTitle: a.newTitle, date: a.date,
+        isNew: a.isNew && !seen,
+        border: a.isNew && !seen ? "rgba(83,74,183,.35)" : "rgba(13,27,42,.08)",
+        seenLabel: seen ? "Visto" : "Marcar visto",
+        seenColor: seen ? "rgba(13,27,42,.4)" : "rgba(13,27,42,.72)",
+        seen: () => this.setState(st => ({ seen: { ...st.seen, [i]: !st.seen[i] } })),
+        open: this.go("profile")
+      };
+    });
+
+    const profile = {
+      initials: "CR", name: "Camila Rojas Vergara", title: "Head of Data Science", company: "Falabella",
+      seniority: "Subgerente", area: "Tecnología", city: "Santiago, RM", year: "2014",
+      history: [
+        { title: "Head of Data Science", company: "Falabella", period: "2026 — actual", length: "1 mes", dot: "#534AB7", ring: "rgba(83,74,183,.25)" },
+        { title: "Lead Analytics", company: "Cencosud", period: "2022 — 2026", length: "3 a 8 m", dot: "#26215C", ring: "rgba(38,33,92,.14)" },
+        { title: "Data Scientist Senior", company: "Cencosud", period: "2020 — 2022", length: "2 a 2 m", dot: "#26215C", ring: "rgba(38,33,92,.14)" },
+        { title: "Analista de datos", company: "Entel", period: "2017 — 2020", length: "2 a 9 m", dot: "#26215C", ring: "rgba(38,33,92,.14)" },
+        { title: "Analista Jr.", company: "Everis", period: "2014 — 2017", length: "2 a 6 m", dot: "#26215C", ring: "rgba(38,33,92,.14)" }
+      ],
+      contacts: [
+        { label: "Correo personal", value: "camila.rojas@gmail.com", color: "#534AB7", icon: "M3 6h18v12H3zM3 7l9 6 9-6", iconColor: "#534AB7" },
+        { label: "Correo corporativo", value: "crojas@falabella.com", color: "#534AB7", icon: "M3 6h18v12H3zM3 7l9 6 9-6", iconColor: "#534AB7" },
+        { label: "Teléfono", value: "No disponible", color: "rgba(13,27,42,.4)", icon: "M6 11V8a6 6 0 0 1 12 0v3M5 11h14v9H5z", iconColor: "rgba(13,27,42,.4)" },
+        { label: "LinkedIn", value: "linkedin.com/in/camilarojasv", color: "#534AB7", icon: "M6 9v10M6 5.5v.01M11 19v-6a3 3 0 0 1 6 0v6", iconColor: "#534AB7" }
+      ],
+      education: [
+        { badge: "UDD", degree: "Ingeniería Civil Industrial", school: "Universidad del Desarrollo", period: "2008 — 2014", tone: "#26215C" },
+        { badge: "MIT", degree: "MicroMasters en Data Science", school: "MIT (online)", period: "2019 — 2020", tone: "#534AB7" },
+        { badge: "UAI", degree: "Diplomado en Analítica Avanzada", school: "Universidad Adolfo Ibáñez", period: "2021", tone: "#8079D0" }
+      ]
+    };
+
+    return {
+      navItems, faculties, seniority, areas, feed, filterGroups, companies, people,
+      periods, alerts, profile,
+      alertStats: stats, periodLabel: s.period.toLowerCase(),
+      screenTitle: titles[s.screen],
+      isDashboard: s.screen === "dashboard",
+      isPeople: s.screen === "people",
+      isProfile: s.screen === "profile",
+      isAlerts: s.screen === "alerts",
+      isStub: s.screen === "reports" || s.screen === "settings",
+      query: s.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      peopleCount: "33.428",
+      goAlerts: this.go("alerts"),
+      goPeople: this.go("people")
+    };
+  }
+}
+</script>
+</body>
+</html>
